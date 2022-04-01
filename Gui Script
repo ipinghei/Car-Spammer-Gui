@@ -1,0 +1,128 @@
+
+local CarSpammerGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Button = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local Text = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local Settings = Instance.new("ImageButton")
+local Logo = Instance.new("ImageLabel")
+local Close = Instance.new("TextButton")
+local UICorner_3 = Instance.new("UICorner")
+
+CarSpammerGui.Name = "CarSpammerGui"
+CarSpammerGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+CarSpammerGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+CarSpammerGui.ResetOnSpawn = false
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = CarSpammerGui
+MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+MainFrame.Size = UDim2.new(0.200000003, 100, 0.100000001, 100)
+
+Button.Name = "Button"
+Button.Parent = MainFrame
+Button.AnchorPoint = Vector2.new(0.5, 0.5)
+Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Button.Position = UDim2.new(0.5, 0, 0.5, 0)
+Button.Size = UDim2.new(0, 200, 0, 50)
+Button.Font = Enum.Font.GothamBold
+Button.Text = "Off"
+Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+Button.TextSize = 42.000
+
+UICorner.Parent = Button
+
+Text.Name = "Text"
+Text.Parent = MainFrame
+Text.AnchorPoint = Vector2.new(0.5, 0.5)
+Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Text.BackgroundTransparency = 1.000
+Text.Position = UDim2.new(0.5, 0, 0.22146371, 0)
+Text.Size = UDim2.new(0, 200, 0, 50)
+Text.Font = Enum.Font.SourceSansItalic
+Text.Text = "Car Spammer"
+Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+Text.TextSize = 38.000
+
+UICorner_2.Parent = MainFrame
+
+Settings.Name = "Settings"
+Settings.Parent = MainFrame
+Settings.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Settings.BackgroundTransparency = 1.000
+Settings.Size = UDim2.new(0, 50, 0, 50)
+
+Logo.Name = "Logo"
+Logo.Parent = MainFrame
+Logo.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Logo.BackgroundTransparency = 1.000
+Logo.Size = UDim2.new(0, 50, 0, 50)
+Logo.Image = "rbxassetid://9248405789"
+
+Close.Name = "Close"
+Close.Parent = MainFrame
+Close.AnchorPoint = Vector2.new(0.5, 0.5)
+Close.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Close.BackgroundTransparency = 1.000
+Close.Position = UDim2.new(0.934100389, 0, 0.134079754, 0)
+Close.Size = UDim2.new(0, 50, 0, 50)
+Close.Font = Enum.Font.GothamBold
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 42.000
+
+UICorner_3.Parent = Close
+
+
+local function SWIU_fake_script() -- Button.LocalScript 
+	local script = Instance.new('LocalScript', Button)
+
+	local btn = script.Parent
+	local on = false
+	
+	btn.MouseButton1Click:Connect(function()
+		if on == false then
+			on = true
+			btn.Text = "ON"
+			btn.BackgroundColor3 = Color3.fromRGB(63, 208, 75)
+			local plr = game.Players.LocalPlayer
+	
+			repeat
+				wait(1)
+				local cars1 = {
+					[1] = "Perodua Myvi"
+				}
+	
+				game:GetService("ReplicatedStorage").SpawnCar:FireServer(unpack(cars1))
+			until plr.Character.Humanoid.Health == 0 or on == false
+		else
+			btn.Text = "OFF"
+			btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+			on = false
+		end
+	end)
+end
+coroutine.wrap(SWIU_fake_script)()
+local function FMOD_fake_script() -- MainFrame.Dragable 
+	local script = Instance.new('LocalScript', MainFrame)
+
+	frame = script.Parent
+	frame.Draggable = true
+	frame.Active = true
+	frame.Selectable = true
+end
+coroutine.wrap(FMOD_fake_script)()
+local function KWUNFS_fake_script() -- Close.LocalScript 
+	local script = Instance.new('LocalScript', Close)
+
+	local btn = script.Parent
+	
+	btn.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Button.LocalScript.Disabled = true
+		script.Parent.Parent.Parent:Destroy()
+	end)
+end
+coroutine.wrap(KWUNFS_fake_script)()
