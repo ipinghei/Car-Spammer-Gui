@@ -1,5 +1,9 @@
+-- Gui to Lua
+-- Version: 3.2
 
-local CarSpammerGui = Instance.new("ScreenGui")
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local Button = Instance.new("TextButton")
 local UICorner = Instance.new("UICorner")
@@ -9,14 +13,19 @@ local Settings = Instance.new("ImageButton")
 local Logo = Instance.new("ImageLabel")
 local Close = Instance.new("TextButton")
 local UICorner_3 = Instance.new("UICorner")
+local car = Instance.new("TextLabel")
+local total = Instance.new("TextLabel")
+local enabled = Instance.new("BoolValue")
+local spawned = Instance.new("StringValue")
 
-CarSpammerGui.Name = "CarSpammerGui"
-CarSpammerGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-CarSpammerGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-CarSpammerGui.ResetOnSpawn = false
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn = false
 
 MainFrame.Name = "MainFrame"
-MainFrame.Parent = CarSpammerGui
+MainFrame.Parent = ScreenGui
 MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 MainFrame.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
 MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -35,18 +44,27 @@ Button.TextSize = 42.000
 
 UICorner.Parent = Button
 
+spawned.Name = "spawned"
+spawned.Parent = MainFrame
+spawned.Value = 0
+
+enabled.Name = "enabled"
+enabled.Parent = MainFrame
+enabled.Value = false
+
 Text.Name = "Text"
 Text.Parent = MainFrame
 Text.AnchorPoint = Vector2.new(0.5, 0.5)
 Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
-Text.Position = UDim2.new(0.5, 0, 0.22146371, 0)
+Text.Position = UDim2.new(0.5, 0, 0.183513045, 0)
 Text.Size = UDim2.new(0, 200, 0, 50)
-Text.Font = Enum.Font.SourceSansItalic
+Text.Font = Enum.Font.SourceSansSemibold
 Text.Text = "Car Spammer"
 Text.TextColor3 = Color3.fromRGB(255, 255, 255)
 Text.TextSize = 38.000
 
+UICorner_2.CornerRadius = UDim.new(0, 15)
 UICorner_2.Parent = MainFrame
 
 Settings.Name = "Settings"
@@ -76,12 +94,39 @@ Close.TextSize = 42.000
 
 UICorner_3.Parent = Close
 
+car.Name = "car"
+car.Parent = MainFrame
+car.AnchorPoint = Vector2.new(0.5, 0.5)
+car.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+car.BackgroundTransparency = 1.000
+car.Position = UDim2.new(0.417532086, 0, 0.816024065, 0)
+car.Size = UDim2.new(0, 200, 0, 50)
+car.Font = Enum.Font.SourceSansItalic
+car.Text = "Car Spawned:"
+car.TextColor3 = Color3.fromRGB(255, 255, 255)
+car.TextSize = 38.000
 
-local function SWIU_fake_script() -- Button.LocalScript 
+total.Name = "total"
+total.Parent = MainFrame
+total.AnchorPoint = Vector2.new(0.5, 0.5)
+total.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+total.BackgroundTransparency = 1.000
+total.Position = UDim2.new(0.771838784, 0, 0.816024065, 0)
+total.Size = UDim2.new(0, 200, 0, 50)
+total.Font = Enum.Font.SourceSansItalic
+total.Text = "0"
+total.TextColor3 = Color3.fromRGB(255, 255, 255)
+total.TextSize = 38.000
+
+-- Scripts:
+
+local function RVHXNZ_fake_script() -- Button.LocalScript 
 	local script = Instance.new('LocalScript', Button)
 
 	local btn = script.Parent
 	local on = false
+	local enabled = script.Parent.Parent.enabled
+	local spawned = script.Parent.Parent.spawned
 	
 	btn.MouseButton1Click:Connect(function()
 		if on == false then
@@ -92,12 +137,14 @@ local function SWIU_fake_script() -- Button.LocalScript
 	
 			repeat
 				wait(0.1)
+				spawned.Value += 1
+				script.Parent.Parent.total.Text = spawned.Value
 				local cars1 = {
 					[1] = "Perodua Myvi"
 				}
 	
 				game:GetService("ReplicatedStorage").SpawnCar:FireServer(unpack(cars1))
-			until plr.Character.Humanoid.Health == 0 or on == false
+			until on == false or enabled.Value == true 
 		else
 			btn.Text = "OFF"
 			btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -105,8 +152,8 @@ local function SWIU_fake_script() -- Button.LocalScript
 		end
 	end)
 end
-coroutine.wrap(SWIU_fake_script)()
-local function FMOD_fake_script() -- MainFrame.Dragable 
+coroutine.wrap(RVHXNZ_fake_script)()
+local function ULOGKNY_fake_script() -- MainFrame.Dragable 
 	local script = Instance.new('LocalScript', MainFrame)
 
 	frame = script.Parent
@@ -114,15 +161,16 @@ local function FMOD_fake_script() -- MainFrame.Dragable
 	frame.Active = true
 	frame.Selectable = true
 end
-coroutine.wrap(FMOD_fake_script)()
-local function KWUNFS_fake_script() -- Close.LocalScript 
+coroutine.wrap(ULOGKNY_fake_script)()
+local function HSWS_fake_script() -- Close.LocalScript 
 	local script = Instance.new('LocalScript', Close)
 
 	local btn = script.Parent
 	
 	btn.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Button.LocalScript.Disabled = true
+		script.Parent.Parent.enabled.Value = true
+		wait(0.1)
 		script.Parent.Parent.Parent:Destroy()
 	end)
 end
-coroutine.wrap(KWUNFS_fake_script)()
+coroutine.wrap(HSWS_fake_script)()
